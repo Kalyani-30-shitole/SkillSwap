@@ -1,0 +1,193 @@
+.register-page {
+  min-height: 100vh;
+  margin-left: 245px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background: #f7f5fc;
+}
+
+.register-card {
+  width: 100%;
+  max-width: 460px;
+  background: #ffffff;
+  padding: 40px;
+  border: 1px solid #e8e3f0;
+  border-radius: 24px;
+  box-shadow:
+    0 20px 60px rgba(33, 26, 53, 0.08);
+}
+
+.register-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.register-logo {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: #7c5cfc;
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.register-brand h2 {
+  margin: 0;
+  color: #211a35;
+  font-size: 20px;
+}
+
+.register-brand p {
+  margin: 3px 0 0;
+  color: #716a80;
+  font-size: 11px;
+}
+
+.register-heading {
+  margin-bottom: 25px;
+}
+
+.register-heading h1 {
+  margin: 0 0 8px;
+  color: #211a35;
+  font-size: 30px;
+  letter-spacing: -0.7px;
+}
+
+.register-heading p {
+  margin: 0;
+  color: #716a80;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.register-group {
+  margin-bottom: 17px;
+}
+
+.register-group label {
+  display: block;
+  margin-bottom: 7px;
+  color: #211a35;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.register-group input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 13px 14px;
+  border: 1px solid #ddd7e8;
+  border-radius: 10px;
+  outline: none;
+  color: #211a35;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.register-group input::placeholder {
+  color: #aaa3b5;
+}
+
+.register-group input:focus {
+  border-color: #7c5cfc;
+  box-shadow:
+    0 0 0 3px rgba(124, 92, 252, 0.1);
+}
+
+.register-password {
+  position: relative;
+}
+
+.register-password input {
+  padding-right: 65px;
+}
+
+.register-password button {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  color: #7c5cfc;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.register-button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 5px;
+  border: none;
+  border-radius: 10px;
+  background: #7c5cfc;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.register-button:hover {
+  background: #6847e8;
+  transform: translateY(-1px);
+}
+
+.register-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.login-text {
+  margin-top: 22px;
+  text-align: center;
+  color: #716a80;
+  font-size: 13px;
+}
+
+.login-text button {
+  margin-left: 5px;
+  border: none;
+  background: transparent;
+  color: #7c5cfc;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .register-page {
+    margin-left: 0;
+    padding: 25px 18px;
+  }
+
+  .register-card {
+    padding: 30px 24px;
+    border-radius: 20px;
+  }
+
+  .register-heading h1 {
+    font-size: 27px;
+  }
+}
+
+@media (max-width: 480px) {
+  .register-page {
+    padding: 15px;
+  }
+
+  .register-card {
+    padding: 25px 20px;
+    box-shadow: none;
+  }
+}
