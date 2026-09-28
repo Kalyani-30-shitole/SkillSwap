@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./Explore.css";
 
 function Explore() {
@@ -7,7 +7,44 @@ function Explore() {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
+    const [sentRequests, setSentRequests] = useState([]);
 
+useEffect(() => {
+    loadSentRequests();
+}, []);
+
+const loadSentRequests = async () => {
+    try {
+        const token = localStorage.getItem("token");
+
+        if (!token) return;
+
+        const response = await fetch(
+            "http://localhost:5000/api/requests",
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+
+        const data = await response.json();
+
+        if (response.ok) {
+            const pendingSentRequests = (data.requests || [])
+                .filter(
+                    (request) =>
+                        request.type === "sent" &&
+                        request.status === "pending"
+                )
+                .map((request) => request.receiver?._id);
+
+            setSentRequests(pendingSentRequests);
+        }
+    } catch (error) {
+        console.log("Unable to load sent requests:", error);
+    }
+};
     // Search users by skill
     const searchUsers = async () => {
         if (skill.trim() === "") {     //trim remove space 
@@ -20,7 +57,8 @@ function Explore() {
             setLoading(true);
             setMessage("");
 
-            //fetch user from backend
+            await loadSentRequests();
+
             const response = await fetch(
                 `http://localhost:5000/api/users/skill/${encodeURIComponent(
                     skill.trim()
@@ -84,6 +122,7 @@ function Explore() {
 
             if (response.ok) {
                 alert(data.message);
+                setSentRequests((prev)=> [...prev, userId]);
             } else {
                 alert(data.message || "Failed to send request.");
             }
@@ -243,8 +282,12 @@ function Explore() {
                                         <button
                                             className="btn btn-success request-button"
                                             onClick={() =>
-                                                sendRequest(user._id)}>
-                                            🤝 Send Request
+                                                sendRequest(user._id)}
+                                                disabled={sentRequests.includes(user._id)}>
+                                                    {
+                                                        sentRequests.includes(user._id)
+                                                        ? "✓ Request Sent" : "🤝 Send Request"
+                                                    }
                                         </button>
 
                                     </div>

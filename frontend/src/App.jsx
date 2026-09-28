@@ -8,6 +8,8 @@ import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import Requests from "./pages/Requests";
 import ProtectedRoute from "./pages/ProtectedRoute";
+import Chat from "./pages/Chat";
+import Messages from "./pages/Messages";
 
 function App(){
   return(
@@ -35,6 +37,20 @@ function App(){
         <ProtectedRoute>
           <Requests/>
         </ProtectedRoute>}/>
+
+         <Route path="/chat/:userId" element={
+      <ProtectedRoute>
+        <Chat/>
+      </ProtectedRoute>
+    }/>
+
+    <Route path="/messages" element={
+      <ProtectedRoute>
+        <Messages/>
+      </ProtectedRoute>
+    }
+    />
+
     </Routes>
 
     </BrowserRouter>

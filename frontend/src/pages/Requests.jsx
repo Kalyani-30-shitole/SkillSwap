@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Requests.css";
 
 function Requests() {
     const [requests, setRequests] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    const navigate = useNavigate();
 
     const getRequests = async () => {
         try {
@@ -39,9 +42,38 @@ function Requests() {
         }
     };
 
+    const markRequestsAsRead = async () => {
+    try {
+        const token = localStorage.getItem("token");
+
+        if (!token) return;
+
+        await fetch(
+            "http://localhost:5000/api/requests/read",
+            {
+                method: "PUT",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+    } catch (error) {
+        console.log("Mark requests as read error:", error);
+    }
+};
+
     useEffect(() => {
         getRequests();
+        markRequestsAsRead();
     }, []);
+
+    const incomingRequests = requests.filter(
+        (request) => request.type === "received"
+    );
+
+    const sentRequests = requests.filter(
+        (request) => request.type === "sent"
+    );
 
     const updateRequest = async (requestId, status) => {
         try {
@@ -67,7 +99,6 @@ function Requests() {
 
             if (response.ok) {
                 alert(data.message);
-
                 getRequests();
             } else {
                 alert(data.message);
@@ -83,15 +114,20 @@ function Requests() {
             <div className="requests-page">
 
                 <div className="requests-loading">
+
                     <div
                         className="spinner-border"
-                        role="status">
+                        role="status"
+                    >
                         <span className="visually-hidden">
                             Loading...
                         </span>
                     </div>
+
                     <p>Loading requests...</p>
+
                 </div>
+
             </div>
         );
     }
@@ -100,19 +136,29 @@ function Requests() {
         <div className="requests-page">
 
             <div className="requests-header">
+
                 <h1>Exchange Requests</h1>
-                <p>Manage your skill exchange requests.</p>
+
+                <p>
+                    Manage your skill exchange requests.
+                </p>
+
             </div>
+
 
             {requests.length === 0 ? (
 
                 <div className="empty-requests">
+
                     <div className="empty-icon">
                         📭
                     </div>
 
                     <h3>No exchange requests</h3>
-                    <p>You don't have any skill exchange requests yet.</p>
+
+                    <p>
+                        You don't have any skill exchange requests yet.
+                    </p>
 
                 </div>
 
@@ -120,121 +166,424 @@ function Requests() {
 
                 <div className="requests-container">
 
+                    {/* ================= INCOMING REQUESTS ================= */}
+
                     <div className="requests-top">
-                        <h2>Your Requests</h2>
+
+                        <h2>Incoming Requests</h2>
+
                         <span className="request-count">
-                            {requests.length}{" "}
-                            {requests.length === 1
+                            {incomingRequests.length}{" "}
+                            {incomingRequests.length === 1
                                 ? "Request"
                                 : "Requests"}
                         </span>
+
                     </div>
 
 
-                    <div className="row g-4">
+                    {incomingRequests.length === 0 ? (
 
-                        {requests.map((request) => (
+                        <div className="no-request-section">
 
-                            <div
-                                className="col-md-6 col-lg-4"
-                                key={request._id}>
+                            <p>No incoming requests.</p>
 
-                                <div className="request-card">
+                        </div>
 
-                                    <div className="request-user">
+                    ) : (
 
-                                        <div className="request-avatar">
-                                            {request.sender?.name
-                                                ?.charAt(0)
-                                                .toUpperCase()}
+                        <div className="row g-4">
+
+                            {incomingRequests.map((request) => (
+
+                                <div
+                                    className="col-md-6 col-lg-4"
+                                    key={request._id}
+                                >
+
+                                    <div className="request-card">
+
+                                        {/* User information */}
+
+                                        <div className="request-user">
+
+                                            <div className="request-avatar">
+
+                                                {request.sender?.name
+                                                    ?.charAt(0)
+                                                    .toUpperCase()}
+
+                                            </div>
+
+                                            <div>
+
+                                                <h4>
+                                                    {request.sender?.name ||
+                                                        "Unknown User"}
+                                                </h4>
+
+                                                <p>
+                                                    {request.sender?.email}
+                                                </p>
+
+                                            </div>
+
                                         </div>
 
-                                        <div>
-                                            <h4>
-                                                {request.sender?.name ||
-                                                    "Unknown User"}
-                                            </h4>
-                                            <p>{request.sender?.email}</p>
+
+                                        <hr />
+
+
+                                        {/* Skill offered */}
+
+                                        <div className="request-skill">
+
+                                            <p>
+                                                🧑‍🏫 Skill Offered
+                                            </p>
+
+                                            <span className="skill-badge offered">
+                                                {request.skillOffered}
+                                            </span>
+
                                         </div>
 
-                                    </div>
 
-                                    <hr />
+                                        {/* Skill wanted */}
 
-                                    <div className="request-skill">
+                                        <div className="request-skill">
 
-                                        <p>🧑‍🏫 Skill Offered</p>
-                                        <span className="skill-badge offered">
-                                            {request.skillOffered}
-                                        </span>
+                                            <p>
+                                                🎓 Skill Wanted
+                                            </p>
 
-                                    </div>
+                                            <span className="skill-badge wanted">
+                                                {request.skillWanted}
+                                            </span>
+
+                                        </div>
 
 
-                                    <div className="request-skill">
-                                        <p>🎓 Skill Wanted</p>
-                                        <span className="skill-badge wanted">
-                                            {request.skillWanted}
-                                        </span>
-                                    </div>
+                                        {/* Status */}
 
-                                    <div className="request-status">
-                                        <p>Status</p>
+                                        <div className="request-status">
+
+                                            <p>Status</p>
+
+                                            {request.status === "pending" && (
+                                                <span className="status pending">
+                                                    ● Pending
+                                                </span>
+                                            )}
+
+                                            {request.status === "accepted" && (
+                                                <span className="status accepted">
+                                                    ● Accepted
+                                                </span>
+                                            )}
+
+                                            {request.status === "rejected" && (
+                                                <span className="status rejected">
+                                                    ● Rejected
+                                                </span>
+                                            )}
+
+                                        </div>
+
+
+                                        {/* Accept / Reject */}
 
                                         {request.status === "pending" && (
-                                            <span className="status pending">
-                                                ● Pending
-                                            </span>
+
+                                            <div className="request-actions">
+
+                                                <button
+                                                    className="btn accept-button"
+                                                    onClick={() =>
+                                                        updateRequest(
+                                                            request._id,
+                                                            "accepted"
+                                                        )
+                                                    }
+                                                >
+                                                    ✓ Accept
+                                                </button>
+
+
+                                                <button
+                                                    className="btn reject-button"
+                                                    onClick={() =>
+                                                        updateRequest(
+                                                            request._id,
+                                                            "rejected"
+                                                        )
+                                                    }
+                                                >
+                                                    ✕ Reject
+                                                </button>
+
+                                            </div>
+
                                         )}
+
+
+                                        {/* Accepted incoming request */}
 
                                         {request.status === "accepted" && (
-                                            <span className="status accepted">
-                                                ● Accepted
-                                            </span>
+
+                                            <div className="accepted-message">
+
+                                                <div>
+                                                    ✓ You accepted{" "}
+                                                    {request.sender?.name}'s request
+                                                </div>
+
+
+                                                <button
+                                                    className="message-button"
+                                                    onClick={() =>
+                                                        navigate(
+                                                            `/chat/${request.sender?._id}`,{
+                                                                state: {
+                                                                    name: request.sender?.name
+                                                                }
+                                                            }
+                                                        )
+                                                    }
+                                                >
+                                                    💬 Message
+                                                </button>
+
+                                            </div>
+
                                         )}
 
+
+                                        {/* Rejected incoming request */}
+
                                         {request.status === "rejected" && (
-                                            <span className="status rejected">
-                                                ● Rejected
-                                            </span>
+
+                                            <div className="rejected-message">
+
+                                                ✕ You rejected{" "}
+                                                {request.sender?.name}'s request
+
+                                            </div>
+
                                         )}
 
                                     </div>
 
-                                    {request.status === "pending" && (
-                                        <div className="request-actions">
-
-                                            <button
-                                                className="btn accept-button"
-                                                onClick={() =>
-                                                    updateRequest(
-                                                        request._id,
-                                                        "accepted"
-                                                    )
-                                                }>
-                                                ✓ Accept
-                                            </button>
-
-                                            <button
-                                                className="btn reject-button"
-                                                onClick={() =>
-                                                    updateRequest(
-                                                        request._id,
-                                                        "rejected"
-                                                    )
-                                                } >
-                                                ✕ Reject
-                                            </button>
-
-                                        </div>
-                                    )}
                                 </div>
 
-                            </div>
+                            ))}
 
-                        ))}
+                        </div>
+
+                    )}
+
+
+                    {/* ================= SENT REQUESTS ================= */}
+
+                    <div className="requests-top sent-title">
+
+                        <h2>Sent Requests</h2>
+
+                        <span className="request-count">
+
+                            {sentRequests.length}{" "}
+
+                            {sentRequests.length === 1
+                                ? "Request"
+                                : "Requests"}
+
+                        </span>
 
                     </div>
+
+
+                    {sentRequests.length === 0 ? (
+
+                        <div className="no-request-section">
+
+                            <p>
+                                You haven't sent any requests.
+                            </p>
+
+                        </div>
+
+                    ) : (
+
+                        <div className="row g-4">
+
+                            {sentRequests.map((request) => (
+
+                                <div
+                                    className="col-md-6 col-lg-4"
+                                    key={request._id}
+                                >
+
+                                    <div className="request-card">
+
+                                        {/* Receiver information */}
+
+                                        <div className="request-user">
+
+                                            <div className="request-avatar">
+
+                                                {request.receiver?.name
+                                                    ?.charAt(0)
+                                                    .toUpperCase()}
+
+                                            </div>
+
+
+                                            <div>
+
+                                                <h4>
+                                                    {request.receiver?.name ||
+                                                        "Unknown User"}
+                                                </h4>
+
+                                                <p>
+                                                    {request.receiver?.email}
+                                                </p>
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <hr />
+
+
+                                        {/* Skill offered */}
+
+                                        <div className="request-skill">
+
+                                            <p>
+                                                🧑‍🏫 You Offered
+                                            </p>
+
+                                            <span className="skill-badge offered">
+                                                {request.skillOffered}
+                                            </span>
+
+                                        </div>
+
+
+                                        {/* Skill wanted */}
+
+                                        <div className="request-skill">
+
+                                            <p>
+                                                🎓 You Wanted
+                                            </p>
+
+                                            <span className="skill-badge wanted">
+                                                {request.skillWanted}
+                                            </span>
+
+                                        </div>
+
+
+                                        {/* Status */}
+
+                                        <div className="request-status">
+
+                                            <p>Status</p>
+
+                                            {request.status === "pending" && (
+                                                <span className="status pending">
+                                                    ● Pending
+                                                </span>
+                                            )}
+
+                                            {request.status === "accepted" && (
+                                                <span className="status accepted">
+                                                    ● Accepted
+                                                </span>
+                                            )}
+
+                                            {request.status === "rejected" && (
+                                                <span className="status rejected">
+                                                    ● Rejected
+                                                </span>
+                                            )}
+
+                                        </div>
+
+
+                                        {/* Waiting */}
+
+                                        {request.status === "pending" && (
+
+                                            <div className="waiting-message">
+
+                                                ⏳ Waiting for{" "}
+                                                {request.receiver?.name}{" "}
+                                                to respond
+
+                                            </div>
+
+                                        )}
+
+
+                                        {/* Accepted sent request */}
+
+                                        {request.status === "accepted" && (
+
+                                            <div className="accepted-message">
+
+                                                <div>
+                                                    ✓ {request.receiver?.name}{" "}
+                                                    accepted your request
+                                                </div>
+
+
+                                                <button
+                                                    className="message-button"
+                                                    onClick={() =>
+                                                        navigate(
+                                                            `/chat/${request.receiver?._id}`,{
+                                                                state:{
+                                                                    name: request.receiver?.name
+                                                                }
+                                                            }
+                                                        )
+                                                    }
+                                                >
+                                                    💬 Message
+                                                </button>
+
+                                            </div>
+
+                                        )}
+
+
+                                        {/* Rejected */}
+
+                                        {request.status === "rejected" && (
+
+                                            <div className="rejected-message">
+
+                                                ✕ {request.receiver?.name}{" "}
+                                                rejected your request
+
+                                            </div>
+
+                                        )}
+
+                                    </div>
+
+                                </div>
+
+                            ))}
+
+                        </div>
+
+                    )}
+
                 </div>
 
             )}

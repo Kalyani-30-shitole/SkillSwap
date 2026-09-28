@@ -2,10 +2,14 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
+const dns = require("dns");
+dns.setServers(["8.8.8.8", "1.1.1.1"]);
+
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const requestRoutes = require("./routes/requestRoutes");
+const messageRoutes = require("./routes/messageRoutes");
 
 const app = express();
 
@@ -16,6 +20,7 @@ connectDB();
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/messages", messageRoutes);
 console.log("REQUEST ROUTES LOADED");
 app.use("/api/requests", requestRoutes);
 

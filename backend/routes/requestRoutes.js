@@ -3,7 +3,9 @@ const express = require("express");
 const{
     sendRequest,
     getMyRequests,
-    updateRequestStatus
+    updateRequestStatus,
+    getUnreadRequests,
+    markRequestsAsRead
 } = require("../controllers/requestController");
 
 const protect = require("../middleware/authMiddleware");
@@ -17,5 +19,8 @@ router.get("/test", (req, res) => {
 
 router.post("/", protect, sendRequest);
 router.get("/",protect, getMyRequests);
+router.get("/unread",protect, getUnreadRequests);
+router.put("/read",protect, markRequestsAsRead);
+
 router.put("/:id", protect, updateRequestStatus);
 module.exports = router;

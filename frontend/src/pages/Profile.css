@@ -320,7 +320,7 @@
   line-height: 1;
 }
 
-.about-section {
+.profile-about-section {
   margin-top: 30px;
   padding: 28px;
   background: #ffffff;
@@ -410,4 +410,19 @@
 
 .profile-avatar:hover {
   opacity: 0.9;
+}
+
+.delete-photo-button {
+  margin-top: 10px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  background: #dc2626;
+  color: white;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.delete-photo-button:hover {
+  background: #b91c1c;
 }

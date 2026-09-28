@@ -24,6 +24,10 @@ const exchangeRequestSchema = new mongoose.Schema(
             type: String,
             enum: ["pending", "accepted", "rejected"],
             default: "pending"
+        },
+        read:{
+            type: Boolean,
+            default: false
         }
     },
     {

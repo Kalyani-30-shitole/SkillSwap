@@ -157,29 +157,29 @@
   bottom: 15px;
   left: 70px;
 }
-
 .about-section {
-  height: 200px;
-  padding: 8px;
-  margin: 100px auto;
+  min-height: 220px;
+  padding: 45px 40px;
+  margin: 70px auto;
   text-align: center;
   border-radius: 25px;
   background: linear-gradient(135deg, #7c5cfc, #a78bfa);
   color: white;
   box-sizing: border-box;
+  box-shadow: 0 10px 30px rgba(124, 92, 252, 0.20);
 }
 
 .section-label {
-  color: #c7c1da;
+  color: #eee9ff;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 2px;
   margin-bottom: 14px;
 }
 
-.about-section h2,
-.how-section h2 {
-  font-size: 36px;
+.about-section h2 {
+  color: white;
+  font-size: 32px;
   line-height: 1.2;
   margin: 0 0 18px;
 }
@@ -187,17 +187,19 @@
 .section-description {
   max-width: 700px;
   margin: auto;
-  color: #e9e2ff;
+  color: #f3efff;
   line-height: 1.8;
   font-size: 15px;
 }
-
 .how-section {
   padding: 50px;
   border-radius: 25px;
   background: white;
   border: 1px solid #ebe7f3;
   box-sizing: border-box;
+}
+.section-label{
+  color: rgb(197, 194, 194);
 }
 
 .steps {

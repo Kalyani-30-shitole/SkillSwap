@@ -1,0 +1,38 @@
+.messages-page {
+    padding: 30px;
+    margin-left: 250px;
+}
+
+.messages-page h1 {
+    margin-bottom: 25px;
+}
+
+.message-notification-card {
+    max-width: 600px;
+    padding: 18px;
+    margin-bottom: 12px;
+
+    background: white;
+    border-radius: 12px;
+
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+
+    cursor: pointer;
+}
+
+.message-notification-card:hover {
+    transform: translateY(-2px);
+}
+
+.message-notification-card h3 {
+    margin: 0 0 6px;
+}
+
+.message-notification-card p {
+    margin: 0 0 8px;
+    color: #555;
+}
+
+.message-notification-card small {
+    color: #888;
+}

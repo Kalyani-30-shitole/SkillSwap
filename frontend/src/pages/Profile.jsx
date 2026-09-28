@@ -88,6 +88,7 @@ function Profile() {
       alert("Please select an image.");
       return;
     }
+
     const reader = new FileReader();
 
     reader.onloadend = () => {
@@ -101,6 +102,11 @@ function Profile() {
     };
     reader.readAsDataURL(file);
   }
+  
+    const handleDeletePhoto = () => {
+  setProfilePhoto("");
+  localStorage.removeItem("profilePhoto");
+};
 
   const addTeachSkill = () => {
 
@@ -291,6 +297,16 @@ function Profile() {
             onChange={handlePhotoChange}
             hidden
           />
+
+          {profilePhoto && (
+  <button
+    type="button"
+    className="delete-photo-button"
+    onClick={handleDeletePhoto}
+  >
+    Delete Photo
+  </button>
+)}
 
         </div>
 
@@ -507,7 +523,7 @@ function Profile() {
         </div>
       </section>
 
-      <section className="about-section">
+      <section className="profile-about-section">
         <div className="about-header">
           <div>
             <p className="skill-label">ABOUT ME</p>

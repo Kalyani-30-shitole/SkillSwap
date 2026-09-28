@@ -308,3 +308,19 @@
         width: 100%;
     }
 }
+
+.message-button {
+    margin-top: 12px;
+    padding: 9px 18px;
+    border: none;
+    border-radius: 8px;
+    background: #6c63ff;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.message-button:hover {
+    opacity: 0.9;
+}

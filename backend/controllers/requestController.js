@@ -13,11 +13,31 @@ const sendRequest = async (req,res)=>{
                 message: "Please provide all request details"
             });
         }
+
+        if (receiver.toString() === req.userId.toString()) {
+    return res.status(400).json({
+        message: "You cannot send an exchange request to yourself"
+    });
+}
+
+const existingRequest = await ExchangeRequest.findOne({
+    sender: req.userId,
+    receiver,
+    status: "pending"
+});
+
+if (existingRequest) {
+    return res.status(400).json({
+        message: "You already sent a request to this user"
+    });
+}
+
         const request = await ExchangeRequest.create({
             sender: req.userId,
             receiver,
             skillOffered,
-            skillWanted
+            skillWanted,
+            read: false
         });
         res.status(201).json({
             message: "Exchange request sent successfully",
@@ -34,29 +54,40 @@ const sendRequest = async (req,res)=>{
     }
 }
 
-const getMyRequests = async (req,res)=>{
-    try{
+const getMyRequests = async (req, res) => {
+    try {
         const requests = await ExchangeRequest.find({
-            receiver: req.userId
+            $or: [
+                { sender: req.userId },
+                { receiver: req.userId }
+            ]
         })
         .populate("sender", "name email teachSkills learnSkills")
-        .populate("receiver", "name email")
-        .sort({ createdAt: -1});
+        .populate("receiver", "name email teachSkills learnSkills")
+        .sort({ createdAt: -1 });
+
+        const formattedRequests = requests.map((request) => ({
+            ...request.toObject(),
+            type:
+                request.sender._id.toString() === req.userId
+                    ? "sent"
+                    : "received"
+        }));
 
         res.status(200).json({
-            count: requests.length,
-            requests
-        })
+            count: formattedRequests.length,
+            requests: formattedRequests
+        });
     }
-    catch(error){
+    catch (error) {
         console.log(error);
+
         res.status(500).json({
             message: "Server error",
             error: error.message
-        })
+        });
     }
-}
-
+};
 const updateRequestStatus = async(req,res)=>{
     try{
         const {status} =req.body;
@@ -98,8 +129,62 @@ const updateRequestStatus = async(req,res)=>{
     }
 }
 
+const getUnreadRequests = async (req, res) => {
+    try {
+        const requests = await ExchangeRequest.find({
+            receiver: req.userId,
+            status: "pending",
+            read: false
+        })
+            .populate("sender", "name email")
+            .sort({ createdAt: -1 });
+
+        res.status(200).json({
+            count: requests.length,
+            requests
+        });
+
+    } catch (error) {
+        console.error("Get unread requests error:", error);
+
+        res.status(500).json({
+            message: "Unable to get unread requests."
+        });
+    }
+};
+
+
+const markRequestsAsRead = async (req, res) => {
+    try {
+        await ExchangeRequest.updateMany(
+            {
+                receiver: req.userId,
+                read: false
+            },
+            {
+                $set: {
+                    read: true
+                }
+            }
+        );
+
+        res.status(200).json({
+            message: "Requests marked as read."
+        });
+
+    } catch (error) {
+        console.error("Mark requests as read error:", error);
+
+        res.status(500).json({
+            message: "Unable to mark requests as read."
+        });
+    }
+};
+
 module.exports = {
     sendRequest,
     getMyRequests,
-    updateRequestStatus
+    updateRequestStatus, 
+    getUnreadRequests,
+    markRequestsAsRead
 }
