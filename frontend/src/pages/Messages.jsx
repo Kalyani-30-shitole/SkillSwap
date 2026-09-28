@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import "./Messages.css";
 
 function Messages() {
-
     const navigate = useNavigate();
 
     const [messages, setMessages] = useState([]);
@@ -31,13 +30,9 @@ function Messages() {
             }
 
         } catch (error) {
-
             console.error(error);
-
         } finally {
-
             setLoading(false);
-
         }
     };
 
@@ -71,17 +66,12 @@ function Messages() {
                                     state: {
                                         name: msg.sender?.name
                                     }
-                                }
-                            )
-                        }
-                    >
+                                })
+                        }>
 
-                        <h3>
-                            {msg.sender?.name}
-                        </h3>
+                        <h3>{msg.sender?.name}</h3>
 
-                        <p>
-                            {msg.message}
+                        <p>{msg.message}
                         </p>
 
                         <small>

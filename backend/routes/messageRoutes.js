@@ -21,13 +21,13 @@ router.get("/test", (req, res) => {
 // Send a message
 router.post("/", protect, sendMessage);
 
-// Get unread message notifications
+//get unread message notifications
 router.get("/unread", protect, getUnreadMessages);
 
 // Mark messages as read
 router.put("/read/:userId", protect, markMessagesAsRead);
 
-// Get conversation
+//To Get conversation
 router.get("/:userId", protect, getMessages);
 
 module.exports = router;

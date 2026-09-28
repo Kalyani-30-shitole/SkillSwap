@@ -1,19 +1,16 @@
 const Message = require("../models/Message");
 const ExchangeRequest = require("../models/ExchangeRequest");
 
-// Send a message
 const sendMessage = async (req, res) => {
     try {
         const { receiver, message } = req.body;
 
-        // Check required fields
         if (!receiver || !message || message.trim() === "") {
             return res.status(400).json({
                 message: "Receiver and message are required."
             });
         }
 
-        // Check whether an accepted exchange exists
         const acceptedRequest = await ExchangeRequest.findOne({
             status: "accepted",
             $or: [
@@ -34,7 +31,6 @@ const sendMessage = async (req, res) => {
             });
         }
 
-        // Create message
         const newMessage = await Message.create({
             sender: req.userId,
             receiver: receiver,
@@ -61,7 +57,6 @@ const getMessages = async (req, res) => {
     try {
         const { userId } = req.params;
 
-        // Check whether an accepted exchange exists
         const acceptedRequest = await ExchangeRequest.findOne({
             status: "accepted",
             $or: [
@@ -82,7 +77,6 @@ const getMessages = async (req, res) => {
             });
         }
 
-        // Get conversation
         const messages = await Message.find({
             $or: [
                 {
@@ -111,7 +105,6 @@ const getMessages = async (req, res) => {
     }
 };
 
-// Get unread message notifications
 const getUnreadMessages = async (req, res) => {
     try {
         const messages = await Message.find({
@@ -136,7 +129,6 @@ const getUnreadMessages = async (req, res) => {
 };
 
 
-// Mark messages from a user as read
 const markMessagesAsRead = async (req, res) => {
     try {
         const { userId } = req.params;

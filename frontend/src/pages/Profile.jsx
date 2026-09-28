@@ -299,14 +299,14 @@ function Profile() {
           />
 
           {profilePhoto && (
-  <button
-    type="button"
-    className="delete-photo-button"
-    onClick={handleDeletePhoto}
-  >
-    Delete Photo
-  </button>
-)}
+          <button
+            type="button"
+             className="delete-photo-button"
+            onClick={handleDeletePhoto}
+            >
+            Delete Photo
+           </button>
+          )}
 
         </div>
 
@@ -322,8 +322,7 @@ function Profile() {
               value={name}
               onChange={(e) =>
                 setName(e.target.value)
-              }
-            />
+              }/>
 
           ) : (
             <h1>{name}</h1>
@@ -408,7 +407,6 @@ function Profile() {
                   )
                 }
                 onKeyDown={(e) => {
-
                   if (e.key === "Enter") {
                     addTeachSkill();
                   }
@@ -485,7 +483,6 @@ function Profile() {
           {editing ? (
 
             <div className="add-skill">
-
               <input
                 type="text"
                 placeholder="Add a skill..."
@@ -500,9 +497,7 @@ function Profile() {
                   if (e.key === "Enter") {
                     addLearnSkill();
                   }
-
-                }}
-              />
+                }}/>
 
               <button
                 type="button"
@@ -566,7 +561,6 @@ function Profile() {
             className="save-profile-button"
             onClick={handleSave}
             disabled={saving}>
-
             {saving
               ? "Saving..."
               : "Save Changes"}

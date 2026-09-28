@@ -4,7 +4,6 @@ import {
     useNavigate,
     useLocation
 } from "react-router-dom";
-
 import "./Chat.css";
 
 function Chat() {
@@ -27,14 +26,8 @@ function Chat() {
         ? JSON.parse(storedUser)
         : null;
 
-    // Person we are chatting with
     const otherUserName =
         location.state?.name || "SkillSwap User";
-
-
-    // =========================
-    // GET MESSAGES
-    // =========================
 
     const getMessages = async () => {
 
@@ -60,7 +53,6 @@ if (response.ok) {
     setMessages(data.messages || []);
     setError("");
 
-    // Mark messages from this user as read
     await fetch(
         `http://localhost:5000/api/messages/read/${userId}`,
         {
@@ -72,42 +64,27 @@ if (response.ok) {
     );
 
             } else {
-
                 setError(
                     data.message ||
                     "Unable to load messages."
                 );
             }
-
         } catch (error) {
-
             console.log(error);
-
             setError(
                 "Something went wrong while loading messages."
             );
 
         } finally {
-
             setLoading(false);
-
         }
     };
 
-
     useEffect(() => {
-
         getMessages();
-
     }, [userId]);
 
-
-    // =========================
-    // SEND MESSAGE
-    // =========================
-
     const sendMessage = async (e) => {
-
         e.preventDefault();
 
         if (newMessage.trim() === "") {
@@ -138,7 +115,6 @@ if (response.ok) {
             const data = await response.json();
 
             if (response.ok) {
-
                 setMessages((prev) => [
                     ...prev,
                     data.data
@@ -148,7 +124,6 @@ if (response.ok) {
                 setError("");
 
             } else {
-
                 setError(
                     data.message ||
                     "Message could not be sent."
@@ -156,15 +131,12 @@ if (response.ok) {
             }
 
         } catch (error) {
-
             console.log(error);
-
             setError(
                 "Something went wrong while sending the message."
             );
 
         } finally {
-
             setSending(false);
 
         }
@@ -175,16 +147,11 @@ if (response.ok) {
 
         <div className="chat-page">
 
-            {/* =========================
-                WHATSAPP STYLE HEADER
-            ========================= */}
-
             <div className="chat-header">
 
                 <button
                     className="back-button"
-                    onClick={() => navigate("/requests")}
-                >
+                    onClick={() => navigate("/requests")}>
                     ←
                 </button>
 
@@ -193,42 +160,23 @@ if (response.ok) {
                 </div>
 
                 <div className="chat-user-info">
-
-                    <h2>
-                        {otherUserName}
-                    </h2>
-
-                    <span>
-                        SkillSwap conversation
-                    </span>
-
+                    <h2>{otherUserName}</h2>
+                    <span>SkillSwap conversation</span>
                 </div>
 
             </div>
 
-
-            {/* =========================
-                CHAT BOX
-            ========================= */}
-
             <div className="chat-container">
 
-
-                {/* MESSAGES */}
-
                 <div className="messages-container">
-
                     {loading && (
 
                         <div className="chat-message-info">
                             Loading messages...
                         </div>
-
                     )}
 
-
                     {!loading && error && (
-
                         <div className="chat-error">
                             {error}
                         </div>
@@ -246,35 +194,30 @@ if (response.ok) {
                                     💬
                                 </div>
 
-                                <h3>
-                                    No messages yet
-                                </h3>
-
+                                <h3>No messages yet</h3>
                                 <p>
                                     Start a conversation with{" "}
                                     {otherUserName}
                                 </p>
-
                             </div>
 
                         )}
-
 
                     {!loading &&
                         !error &&
                         messages.map((msg) => {
 
                            const currentUserId =
-    user?._id || user?.id;
+             user?._id || user?.id;
 
-const messageSenderId =
-    typeof msg.sender === "object"
-        ? msg.sender?._id
-        : msg.sender;
+            const messageSenderId =
+             typeof msg.sender === "object"
+            ? msg.sender?._id
+            : msg.sender;
 
-const isMine =
-    String(messageSenderId) ===
-    String(currentUserId);  
+            const isMine =
+            String(messageSenderId) ===
+            String(currentUserId);  
 
                             return (
 
@@ -284,13 +227,9 @@ const isMine =
                                         isMine
                                             ? "message-row my-message"
                                             : "message-row other-message"
-                                    }
-                                >
+                                    }>
 
                                     <div className="message-bubble">
-
-                                        {/* NAME */}
-
                                         <div className="message-sender">
 
                                             {isMine
@@ -299,17 +238,9 @@ const isMine =
 
                                         </div>
 
-
-                                        {/* MESSAGE */}
-
                                         <div className="message-text">
-
                                             {msg.message}
-
                                         </div>
-
-
-                                        {/* TIME */}
 
                                         <div className="message-time">
 
@@ -321,7 +252,6 @@ const isMine =
                                             })}
 
                                         </div>
-
                                     </div>
 
                                 </div>
@@ -333,14 +263,9 @@ const isMine =
                 </div>
 
 
-                {/* =========================
-                    MESSAGE INPUT
-                ========================= */}
-
                 <form
                     className="chat-input-area"
-                    onSubmit={sendMessage}
-                >
+                    onSubmit={sendMessage}>
 
                     <input
                         type="text"
@@ -357,8 +282,7 @@ const isMine =
                         disabled={
                             sending ||
                             newMessage.trim() === ""
-                        }
-                    >
+                        }>
                         {sending ? "..." : "➤"}
                     </button>
 

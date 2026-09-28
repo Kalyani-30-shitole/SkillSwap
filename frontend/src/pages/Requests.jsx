@@ -3,11 +3,13 @@ import { useNavigate } from "react-router-dom";
 import "./Requests.css";
 
 function Requests() {
+    //used for states for storing requests and loading status
     const [requests, setRequests] = useState([]);
     const [loading, setLoading] = useState(true);
 
     const navigate = useNavigate();
 
+    //to fetch incoming and send requests for log-in user
     const getRequests = async () => {
         try {
             const token = localStorage.getItem("token");
@@ -117,8 +119,7 @@ function Requests() {
 
                     <div
                         className="spinner-border"
-                        role="status"
-                    >
+                        role="status">
                         <span className="visually-hidden">
                             Loading...
                         </span>
@@ -127,7 +128,6 @@ function Requests() {
                     <p>Loading requests...</p>
 
                 </div>
-
             </div>
         );
     }
@@ -136,9 +136,7 @@ function Requests() {
         <div className="requests-page">
 
             <div className="requests-header">
-
                 <h1>Exchange Requests</h1>
-
                 <p>
                     Manage your skill exchange requests.
                 </p>
@@ -155,7 +153,6 @@ function Requests() {
                     </div>
 
                     <h3>No exchange requests</h3>
-
                     <p>
                         You don't have any skill exchange requests yet.
                     </p>
@@ -165,8 +162,6 @@ function Requests() {
             ) : (
 
                 <div className="requests-container">
-
-                    {/* ================= INCOMING REQUESTS ================= */}
 
                     <div className="requests-top">
 
@@ -185,9 +180,7 @@ function Requests() {
                     {incomingRequests.length === 0 ? (
 
                         <div className="no-request-section">
-
                             <p>No incoming requests.</p>
-
                         </div>
 
                     ) : (
@@ -198,21 +191,16 @@ function Requests() {
 
                                 <div
                                     className="col-md-6 col-lg-4"
-                                    key={request._id}
-                                >
+                                    key={request._id}>
 
                                     <div className="request-card">
-
-                                        {/* User information */}
 
                                         <div className="request-user">
 
                                             <div className="request-avatar">
-
                                                 {request.sender?.name
                                                     ?.charAt(0)
                                                     .toUpperCase()}
-
                                             </div>
 
                                             <div>
@@ -221,26 +209,18 @@ function Requests() {
                                                     {request.sender?.name ||
                                                         "Unknown User"}
                                                 </h4>
-
-                                                <p>
-                                                    {request.sender?.email}
-                                                </p>
+                                                <p>{request.sender?.email}</p>
 
                                             </div>
 
                                         </div>
 
-
                                         <hr />
 
 
-                                        {/* Skill offered */}
-
                                         <div className="request-skill">
 
-                                            <p>
-                                                🧑‍🏫 Skill Offered
-                                            </p>
+                                            <p>🧑‍🏫 Skill Offered</p>
 
                                             <span className="skill-badge offered">
                                                 {request.skillOffered}
@@ -248,26 +228,15 @@ function Requests() {
 
                                         </div>
 
-
-                                        {/* Skill wanted */}
-
                                         <div className="request-skill">
-
-                                            <p>
-                                                🎓 Skill Wanted
-                                            </p>
+                                            <p>🎓 Skill Wanted </p>
 
                                             <span className="skill-badge wanted">
                                                 {request.skillWanted}
                                             </span>
-
                                         </div>
 
-
-                                        {/* Status */}
-
                                         <div className="request-status">
-
                                             <p>Status</p>
 
                                             {request.status === "pending" && (
@@ -290,9 +259,6 @@ function Requests() {
 
                                         </div>
 
-
-                                        {/* Accept / Reject */}
-
                                         {request.status === "pending" && (
 
                                             <div className="request-actions">
@@ -304,11 +270,9 @@ function Requests() {
                                                             request._id,
                                                             "accepted"
                                                         )
-                                                    }
-                                                >
+                                                    }>
                                                     ✓ Accept
                                                 </button>
-
 
                                                 <button
                                                     className="btn reject-button"
@@ -327,8 +291,6 @@ function Requests() {
                                         )}
 
 
-                                        {/* Accepted incoming request */}
-
                                         {request.status === "accepted" && (
 
                                             <div className="accepted-message">
@@ -338,7 +300,7 @@ function Requests() {
                                                     {request.sender?.name}'s request
                                                 </div>
 
-
+                                    {/* allow user to start chatting after request is accepted */}
                                                 <button
                                                     className="message-button"
                                                     onClick={() =>
@@ -358,9 +320,6 @@ function Requests() {
 
                                         )}
 
-
-                                        {/* Rejected incoming request */}
-
                                         {request.status === "rejected" && (
 
                                             <div className="rejected-message">
@@ -373,43 +332,31 @@ function Requests() {
                                         )}
 
                                     </div>
-
                                 </div>
 
                             ))}
-
                         </div>
 
                     )}
 
 
-                    {/* ================= SENT REQUESTS ================= */}
-
                     <div className="requests-top sent-title">
-
                         <h2>Sent Requests</h2>
-
                         <span className="request-count">
-
                             {sentRequests.length}{" "}
-
                             {sentRequests.length === 1
                                 ? "Request"
                                 : "Requests"}
-
                         </span>
-
                     </div>
 
 
                     {sentRequests.length === 0 ? (
 
                         <div className="no-request-section">
-
                             <p>
                                 You haven't sent any requests.
                             </p>
-
                         </div>
 
                     ) : (
@@ -420,23 +367,17 @@ function Requests() {
 
                                 <div
                                     className="col-md-6 col-lg-4"
-                                    key={request._id}
-                                >
+                                    key={request._id}>
 
                                     <div className="request-card">
-
-                                        {/* Receiver information */}
 
                                         <div className="request-user">
 
                                             <div className="request-avatar">
-
                                                 {request.receiver?.name
                                                     ?.charAt(0)
                                                     .toUpperCase()}
-
                                             </div>
-
 
                                             <div>
 
@@ -445,25 +386,16 @@ function Requests() {
                                                         "Unknown User"}
                                                 </h4>
 
-                                                <p>
-                                                    {request.receiver?.email}
-                                                </p>
+                                                <p>{request.receiver?.email}</p>
 
                                             </div>
 
                                         </div>
 
-
                                         <hr />
 
-
-                                        {/* Skill offered */}
-
                                         <div className="request-skill">
-
-                                            <p>
-                                                🧑‍🏫 You Offered
-                                            </p>
+                                            <p> 🧑‍🏫 You Offered</p>
 
                                             <span className="skill-badge offered">
                                                 {request.skillOffered}
@@ -471,23 +403,15 @@ function Requests() {
 
                                         </div>
 
-
-                                        {/* Skill wanted */}
-
                                         <div className="request-skill">
 
-                                            <p>
-                                                🎓 You Wanted
-                                            </p>
+                                            <p>🎓 You Wanted</p>
 
                                             <span className="skill-badge wanted">
                                                 {request.skillWanted}
                                             </span>
 
                                         </div>
-
-
-                                        {/* Status */}
 
                                         <div className="request-status">
 
@@ -513,9 +437,6 @@ function Requests() {
 
                                         </div>
 
-
-                                        {/* Waiting */}
-
                                         {request.status === "pending" && (
 
                                             <div className="waiting-message">
@@ -527,9 +448,6 @@ function Requests() {
                                             </div>
 
                                         )}
-
-
-                                        {/* Accepted sent request */}
 
                                         {request.status === "accepted" && (
 
@@ -560,9 +478,6 @@ function Requests() {
 
                                         )}
 
-
-                                        {/* Rejected */}
-
                                         {request.status === "rejected" && (
 
                                             <div className="rejected-message">
@@ -575,13 +490,11 @@ function Requests() {
                                         )}
 
                                     </div>
-
                                 </div>
 
                             ))}
 
                         </div>
-
                     )}
 
                 </div>
