@@ -6,6 +6,8 @@ import {
 } from "react-router-dom";
 import "./Chat.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function Chat() {
 
     const { userId } = useParams();
@@ -39,7 +41,7 @@ function Chat() {
             }
 
             const response = await fetch(
-                `http://localhost:5000/api/messages/${userId}`,
+                `${API_URL}/api/messages/${userId}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -54,7 +56,7 @@ if (response.ok) {
     setError("");
 
     await fetch(
-        `http://localhost:5000/api/messages/read/${userId}`,
+        `${API_URL}/api/messages/read/${userId}`,
         {
             method: "PUT",
             headers: {
@@ -96,7 +98,7 @@ if (response.ok) {
             setSending(true);
 
             const response = await fetch(
-                "http://localhost:5000/api/messages",
+                `${API_URL}/api/messages`,
                 {
                     method: "POST",
 

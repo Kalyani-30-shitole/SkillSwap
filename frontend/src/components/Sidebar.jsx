@@ -2,6 +2,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./Sidebar.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 import {
     FaHome,
     FaCompass,
@@ -34,7 +36,7 @@ function Sidebar() {
         try {
 
             const response = await fetch(
-                "http://localhost:5000/api/messages/unread",
+                `${API_URL}/api/messages/unread`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -49,7 +51,7 @@ function Sidebar() {
             }
 
               const requestResponse = await fetch(
-            "http://localhost:5000/api/requests/unread",
+            `${API_URL}/api/requests/unread`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`

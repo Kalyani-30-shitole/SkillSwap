@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import "./Profile.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function Profile() {
   const [profile, setProfile] = useState(null);
 
@@ -32,7 +34,7 @@ function Profile() {
       }
 
       const response = await fetch(
-        "http://localhost:5000/api/users/profile",
+        `${API_URL}/api/users/profile`,
         {
           method: "GET",
           headers: {
@@ -169,7 +171,7 @@ function Profile() {
         localStorage.getItem("token");
 
       const response = await fetch(
-        "http://localhost:5000/api/users/profile",
+        `${API_URL}/api/users/profile`,
         {
           method: "PUT",
           headers: {

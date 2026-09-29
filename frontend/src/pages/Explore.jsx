@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import "./Explore.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function Explore() {
     const [skill, setSkill] = useState("");
     const [skillOffered, setSkillOffered] = useState("");
@@ -20,7 +22,7 @@ const loadSentRequests = async () => {
         if (!token) return;
 
         const response = await fetch(
-            "http://localhost:5000/api/requests",
+            `${API_URL}/api/requests`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -47,7 +49,7 @@ const loadSentRequests = async () => {
 };
     // Search users by skill
     const searchUsers = async () => {
-        if (skill.trim() === "") {     //trim remove space 
+        if (skill.trim() === "") {     //trim used to remove space 
             setMessage("Please enter a skill you want to learn.");
             setUsers([]);
             return;
@@ -60,7 +62,7 @@ const loadSentRequests = async () => {
             await loadSentRequests();
 
             const response = await fetch(
-                `http://localhost:5000/api/users/skill/${encodeURIComponent(
+                `${API_URL}/api/users/skill/${encodeURIComponent(
                     skill.trim()
                 )}`
             );
@@ -103,7 +105,7 @@ const loadSentRequests = async () => {
             }
 
             const response = await fetch(
-                "http://localhost:5000/api/requests",
+                `${API_URL}/api/requests`,
                 {
                     method: "POST",
                     headers: {

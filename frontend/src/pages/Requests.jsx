@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Requests.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function Requests() {
     //used for states for storing requests and loading status
     const [requests, setRequests] = useState([]);
@@ -21,7 +23,7 @@ function Requests() {
             }
 
             const response = await fetch(
-                "http://localhost:5000/api/requests",
+                `${API_URL}/api/requests`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -51,7 +53,7 @@ function Requests() {
         if (!token) return;
 
         await fetch(
-            "http://localhost:5000/api/requests/read",
+            `${API_URL}/api/requests/read`,
             {
                 method: "PUT",
                 headers: {
@@ -82,7 +84,7 @@ function Requests() {
             const token = localStorage.getItem("token");
 
             const response = await fetch(
-                `http://localhost:5000/api/requests/${requestId}`,
+                `${API_URL}/api/requests/${requestId}`,
                 {
                     method: "PUT",
 
