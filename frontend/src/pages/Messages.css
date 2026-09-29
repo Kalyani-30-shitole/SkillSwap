@@ -33,3 +33,24 @@
 .message-notification-card small {
     color: #888;
 }
+
+@media (max-width: 768px) {
+
+    .messages-page {
+        margin-left: 0;
+        padding: 20px 15px 90px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .messages-page h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .message-notification-card {
+        width: 100%;
+        max-width: none;
+        box-sizing: border-box;
+    }
+}
