@@ -15,7 +15,10 @@ const app = express();
 
 app.use(
     cors({
-        origin: "http://localhost:5173",
+        origin: [
+            "http://localhost:5173",
+            "https://skillswap-frontend-6iar.onrender.com"
+        ],
         methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         allowedHeaders: ["Content-Type", "Authorization"]
     })
