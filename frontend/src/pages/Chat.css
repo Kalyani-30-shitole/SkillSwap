@@ -246,27 +246,44 @@
 }
 
 @media (max-width: 600px) {
+
     .chat-page {
         padding: 0;
+        padding-bottom: 70px;
+        min-height: 100dvh;
     }
+
     .chat-header {
         border-radius: 0;
     }
+
     .chat-container {
-        height: calc(100vh - 73px);
+        height: calc(100dvh - 143px);
         min-height: 0;
         border-radius: 0;
     }
+
     .messages-container {
         padding: 15px;
     }
+
     .message-bubble {
         max-width: 80%;
     }
+
     .message-text {
         padding-right: 45px;
     }
+
     .chat-input-area {
         padding: 8px;
+        position: relative;
+        z-index: 10;
     }
+
+    .chat-input-area input {
+        min-width: 0;
+        font-size: 16px;
+    }
+
 }
